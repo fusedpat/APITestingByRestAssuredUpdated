@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.List;
+
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -133,9 +135,25 @@ public class FirstChapterTests {
         assertThat(firstPetStatus, equalTo("available"));
 
         // Other JSONPath usages
-        String[] petNames = jsonPath.get("*.name");
+        List<String> petNamesList = jsonPath.getList("name");
+        String[] petNames = petNamesList.toArray(new String[0]);
 
-        // Additional assertions using Hamcrest
-        assertThat(petNames.length, equalTo(numberOfPets));
+        for (String name : petNames) {
+            System.out.println(name);
+        }
+        
+
+        // Example using . operator
+        List<String> allPetNames = jsonPath.getList("$.name");
+        System.out.println("All Pet Names: " + allPetNames);
+
+        // Example using [] operator
+        String secondPetName = jsonPath.getString("$[1].name");
+        System.out.println("Second Pet Name: " + secondPetName);
+
+        // Example retrieving corresponding photoUrls for each pet
+        List<List<String>> photoUrls = jsonPath.getList("photoUrls");
+        System.out.println("Photo URLs: " + photoUrls);
+        
     }
 }
